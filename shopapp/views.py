@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render, redirect
 from app01.models import *
 from cart import Cart
@@ -21,7 +21,10 @@ def add_book(request):
         cart.add_book_toCart(bookid,num)
         request.session['cart'] = cart
     print(cart)
-    return HttpResponse(1)
+    cart = request.session.get('cart')
+    save_price = cart.save_price
+    total_price = cart.total_price
+    return JsonResponse({'save_price': save_price, 'total_price': total_price})
 
 
 def del_book(request):
